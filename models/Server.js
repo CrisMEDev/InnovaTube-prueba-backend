@@ -10,8 +10,9 @@ class Server {
       this.port = process.env.PORT;
 
       this.paths = {
-         auth:                               '/innova-tube/auth',
-         user:                               '/innova-tube/user'
+         auth:                                  '/innova-tube/auth',
+         user:                                  '/innova-tube/user',
+         videos:                                '/innova-tube/videos',
       }
 
       this.databaseConnection();
@@ -34,8 +35,9 @@ class Server {
 
    routes(){
 
-      this.app.use(this.paths.auth,                                   require('../routes/auth'));
-      this.app.use(this.paths.user,                                   require('../routes/user'));
+      this.app.use(this.paths.auth,                                     require('../routes/auth'));
+      this.app.use(this.paths.user,                                     require('../routes/user'));
+      this.app.use(this.paths.videos,                                   require('../routes/videos'));
       
    }
 
