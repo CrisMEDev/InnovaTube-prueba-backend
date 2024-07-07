@@ -1,2 +1,8 @@
+require('dotenv').config();
 
-console.log('Iniciando proyecto');
+const { Server } = require('./models/index');
+
+const server = new Server;
+
+server.listen();
+
