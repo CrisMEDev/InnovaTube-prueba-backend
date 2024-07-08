@@ -89,7 +89,32 @@ const changePassword = async (req = request, res = response) => {
    }
 }
 
+const renewToken = async (req = request, res = response) => {
+
+   const user = req.logged_user; // Se extrae usuario del token
+
+   try {
+
+      // Generar JWT nuevamente
+      const token = await generateJWT(user._id);
+
+      res.status(201).json({
+         ok: true,
+         user,
+         token
+      });
+
+   } catch (error) {
+      console.log(error);
+      res.status(500).json({
+         msg: 'Algo salió mal, contacte a su administrador'
+      });
+   }
+
+}
+
 module.exports = {
    changePassword,
-   login
+   login,
+   renewToken,
 }
