@@ -3,12 +3,12 @@ const bcryptjs = require('bcryptjs');
 
 const { InnovaUser } = require('../models');
 
-const createUser = async(req = request, res = response) => {
+const createUser = async (req = request, res = response) => {
 
    const { status: estado, password, ...data } = req.body;
-   
+
    try {
-      
+
       const innovaUserDB = new InnovaUser({ ...data });
 
       // Encriptar contraseña
@@ -31,13 +31,36 @@ const createUser = async(req = request, res = response) => {
    }
 }
 
-const deleteUser = async(req = request, res = response) => {
+const updateFavorites = async(req = request, res = response) => {
 
-   const { id } = req.params;
+   const { favorites } = req.body;
+   const user = req.logged_user;
    
    try {
 
-      const innovaUserDB = await InnovaUser.findByIdAndUpdate( id, { status: false } );
+      await InnovaUser.findByIdAndUpdate(user._id, { favorites });
+
+      return res.status(200).json({
+         ok: true,
+         favorites,
+         msg: 'Favoritos actualizados correctamente'
+      });
+
+   } catch (error) {
+      console.log(error);
+      return res.status(500).json({
+         msg: 'Algo salió mal, contacte a su administrador'
+      });
+   }
+}
+
+const deleteUser = async (req = request, res = response) => {
+
+   const { id } = req.params;
+
+   try {
+
+      const innovaUserDB = await InnovaUser.findByIdAndUpdate(id, { status: false });
 
       res.status(200).json({
          ok: true,
@@ -55,5 +78,6 @@ const deleteUser = async(req = request, res = response) => {
 
 module.exports = {
    createUser,
+   updateFavorites,
    deleteUser
 }

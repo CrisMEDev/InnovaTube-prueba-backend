@@ -2,6 +2,7 @@ const { Router } = require('express');
 const { check } = require('express-validator');
 
 const { createUser,
+   updateFavorites,
    deleteUser
 } = require('../controllers/user');
 const { validateFields, validateJWT } = require('../middlewares');
@@ -23,6 +24,11 @@ router.post('/create', [
 ], createUser);
 
 router.use(validateJWT);
+
+router.post('/favorites', [
+   check('favorites', 'Debe ser un arreglo').isArray(),
+   validateFields
+], updateFavorites);
 
 router.delete('/delete/:id', [
    check('id', 'No es un ID válido').isMongoId(),
